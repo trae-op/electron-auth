@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "types": [
+      "./types/receives",
+      "./types/sends",
+      "./types/invokes",
+      "./types/collected",
+      "./types/windows",
+      "./types/files"
+    ],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    /* Alias */
+    "baseUrl": "./",
+    "paths": {
+      "@config/*": ["src/renderer/config/*"],
+      "@windows/*": ["src/renderer/windows/*"],
+      "@hooks/*": ["src/renderer/hooks/*"],
+      "@components/*": ["src/renderer/components/*"],
+      "@layouts/*": ["src/renderer/layouts/*"],
+      "@ui-business/*": ["src/renderer/ui-business/*"],
+      "@ui-composites/*": ["src/renderer/ui-composites/*"],
+      "@utils/*": ["src/renderer/utils/*"],
+      "@shared/*": ["src/renderer/shared/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["src/main"]
+}
