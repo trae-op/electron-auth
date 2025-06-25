@@ -1,34 +1,38 @@
-import { WindowManager } from "../@core/decorators/window-manager.js";
-import { TWindowManager } from "../@core/types/window-manager.js";
-import { CheckForUpdatesService } from "./services/check-for-updates.js";
+import { createWindow } from "../shared/control-window/create.js";
+import { setStore } from "../shared/store.js";
+import { checkForUpdates } from "./services/checkForUpdates.js";
 
-@WindowManager<TWindows["updateApp"]>({
-  hash: "window:update-app",
-  isCache: true,
-  options: {
-    width: 365,
-    height: 365,
-    alwaysOnTop: true,
-    autoHideMenuBar: true,
-    minimizable: false,
-    maximizable: false,
-    title: "",
-  },
-})
-export class UpdaterWindow implements TWindowManager {
-  private isCheckFirst = true;
-  constructor(private checkForUpdatesService: CheckForUpdatesService) {}
+let isCheckFirst = true;
 
-  onDidFinishLoad(): void {
-    if (this.isCheckFirst) {
-      this.checkForUpdatesService.checkForUpdates();
-      this.isCheckFirst = false;
+export function openWindow(): void {
+  const window = createWindow<TWindows["updateApp"]>({
+    hash: "window:update-app",
+    isCache: true,
+    options: {
+      width: 340,
+      height: 340,
+      alwaysOnTop: true,
+      autoHideMenuBar: true,
+      minimizable: false,
+      maximizable: false,
+      title: "",
+    },
+  });
+
+  window.webContents.on("did-finish-load", () => {
+    setStore("updateWindow", window);
+
+    if (isCheckFirst) {
+      checkForUpdates();
+      isCheckFirst = false;
     }
-  }
+  });
 
-  onShow() {
-    if (!this.isCheckFirst) {
-      this.checkForUpdatesService.checkForUpdates();
+  window.on("show", () => {
+    setStore("updateWindow", window);
+
+    if (!isCheckFirst) {
+      checkForUpdates();
     }
-  }
+  });
 }

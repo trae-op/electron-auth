@@ -1,54 +1,36 @@
-import { app, BrowserWindow } from "electron";
+import { app } from "electron";
 import pkg from "electron-updater";
-import { destroyWindows } from "../@core/control-window/destroy.js";
-import { IpcHandler } from "../@core/decorators/ipc-handler.js";
-import type {
-  TIpcHandlerInterface,
-  TParamOnInit,
-} from "../@core/types/ipc-handler.js";
-import { ipcMainOn } from "../$shared/utils.js";
-import { TrayService } from "../tray/service.js";
-import { OpenLatestVersionService } from "./services/mac-os/open-latest-version.js";
+import { destroyWindows } from "../shared/control-window/destroy.js";
+import { buildTray, destroyTray, getTrayMenu } from "../shared/tray/tray.js";
+import { ipcMainOn } from "../shared/utils.js";
+import { openLatestVersion } from "./services/mac/openLatestVersion.js";
+import { openWindow } from "./window.js";
 
 const { autoUpdater } = pkg;
 
-@IpcHandler()
-export class UpdaterIpc implements TIpcHandlerInterface {
-  private updateAppWindow: BrowserWindow | undefined = undefined;
+export function registerIpc(): void {
+  const items = getTrayMenu();
 
-  constructor(
-    private trayService: TrayService,
-    private openLatestVersionService: OpenLatestVersionService
-  ) {}
+  buildTray(
+    items.map((item) => {
+      if (item.name === "check-update") {
+        item.click = () => {
+          openWindow();
+        };
+      }
 
-  onInit({ getWindow }: TParamOnInit<TWindows["updateApp"]>) {
-    const updateAppWindow = getWindow("window:update-app");
+      return item;
+    })
+  );
 
-    this.trayService.buildTray(
-      this.trayService.trayMenu.map((item) => {
-        if (item.name === "check-update") {
-          item.click = async () => {
-            if (this.updateAppWindow) {
-              this.updateAppWindow.show();
-            } else {
-              this.updateAppWindow = await updateAppWindow.create();
-            }
-          };
-        }
+  ipcMainOn("restart", () => {
+    autoUpdater.quitAndInstall();
+  });
 
-        return item;
-      })
-    );
-
-    ipcMainOn("restart", () => {
-      autoUpdater.quitAndInstall();
-    });
-
-    ipcMainOn("openLatestVersion", (_, { updateFile }) => {
-      this.openLatestVersionService.openLatestVersion(updateFile);
-      this.trayService.destroyTray();
-      destroyWindows();
-      app.quit();
-    });
-  }
+  ipcMainOn("openLatestVersion", ({ updateFile }) => {
+    openLatestVersion(updateFile);
+    destroyTray();
+    destroyWindows();
+    app.quit();
+  });
 }

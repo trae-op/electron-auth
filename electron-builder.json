@@ -1,5 +1,5 @@
 {
-  "appId": "com.myself.electron-auth",
+  "appId": "com.myself.electron-updater",
   "files": ["dist-main", "dist-renderer"],
   "extraResources": [
     "dist-main/preload.cjs",
@@ -7,15 +7,11 @@
     {
       "from": ".env.production",
       "to": ".env"
-    },
-    {
-      "from": "./src/main/app-preload/spinner.html",
-      "to": "dist-main/spinner.html"
     }
   ],
   "mac": {
     "target": "dmg",
-    "icon": "./src/assets/512x512.png",
+    "icon": "./src/assets/react-512x512.png",
     "identity": null
   },
   "linux": {
@@ -24,7 +20,7 @@
   },
   "win": {
     "target": "nsis",
-    "icon": "./src/assets/256x256.png"
+    "icon": "./src/assets/react-256x256.png"
   },
   "nsis": {
     "oneClick": false,
@@ -34,7 +30,7 @@
     {
       "provider": "github",
       "owner": "trae-op",
-      "repo": "electron-auth",
+      "repo": "electron-updater",
       "releaseType": "release"
     }
   ]

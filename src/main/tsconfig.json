@@ -4,8 +4,6 @@
     "module": "NodeNext",
     "skipLibCheck": true,
     "strict": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "outDir": "../../dist-main",
     "types": [
       "../../types/receives",

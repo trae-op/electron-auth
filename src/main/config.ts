@@ -1,14 +1,7 @@
-import dotenv from "dotenv";
-import path from "node:path";
-import { isDev } from "./$shared/utils.js";
-
-const envPath = path.join(process.resourcesPath, ".env");
-dotenv.config(!isDev() ? { path: envPath } : undefined);
-
 export const windows: TWindows = {
   main: "window:main",
-  preloadApp: "window:preload-app",
   updateApp: "window:update-app",
+  preloadApp: "window:preload-app",
 };
 
 export const folders = {
@@ -28,9 +21,9 @@ export const menu = {
 };
 
 export const icons = {
-  trayIconTemplate: "16x16.png",
-  trayIcon: "16x16.png",
-  notificationIcon: "72x72.png",
+  trayIconTemplate: "trayIconTemplate.png",
+  trayIcon: "trayIcon.png",
+  notificationIcon: "react-72x72.png",
 };
 
 export const messages = {
@@ -46,15 +39,10 @@ export const messages = {
     errorOpenFolder: "Failed to open folder",
     errorVerifyDownload: "File does not exist",
   },
-  crash: {
-    uncaughtException: "Uncaught synchronous error in main process!",
-    unhandledRejection: "Unhandled Promise failure in main process!",
-    renderProcessGone: "The renderer process terminated unexpectedly!",
-  },
 };
 
 export const publishOptions = {
-  repo: "electron-auth",
+  repo: "electron-updater",
   owner: "trae-op",
 };
 

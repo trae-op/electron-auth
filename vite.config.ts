@@ -13,14 +13,13 @@ export default defineConfig({
     outDir: "dist-renderer",
   },
   server: {
-    port: process.env.LOCALHOST_ELECTRON_SERVER_PORT
-      ? Number(process.env.LOCALHOST_ELECTRON_SERVER_PORT)
+    port: process.env.LOCALHOST_PORT
+      ? Number(process.env.LOCALHOST_PORT)
       : 3000,
     strictPort: true,
   },
   resolve: {
     alias: {
-      "@config": path.resolve(__dirname, "src/renderer/config"),
       "@windows": path.resolve(__dirname, "src/renderer/windows"),
       "@utils": path.resolve(__dirname, "src/renderer/utils"),
       "@hooks": path.resolve(__dirname, "src/renderer/hooks"),

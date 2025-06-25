@@ -33,7 +33,6 @@
     /* Alias */
     "baseUrl": "./",
     "paths": {
-      "@config/*": ["src/renderer/config/*"],
       "@windows/*": ["src/renderer/windows/*"],
       "@hooks/*": ["src/renderer/hooks/*"],
       "@components/*": ["src/renderer/components/*"],

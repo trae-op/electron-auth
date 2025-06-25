@@ -1,15 +1,20 @@
-import { IpcHandler } from "../@core/decorators/ipc-handler.js";
-import type {
-  TIpcHandlerInterface,
-  TParamOnInit,
-} from "../@core/types/ipc-handler.js";
+import { ipcMainOn } from "../shared/utils.js";
+import { getWindow } from "../shared/control-window/receive.js";
+import { openWindow } from "./window.js";
 
-@IpcHandler()
-export class AppPreloadIpc implements TIpcHandlerInterface {
-  constructor() {}
+export function registerIpc(): void {
+  openWindow();
 
-  onInit({ getWindow }: TParamOnInit<TWindows["preloadApp"]>) {
-    const mainWindow = getWindow("window:preload-app");
-    mainWindow.create();
-  }
+  ipcMainOn("closePreloadWindow", async () => {
+    const mainWindow = getWindow<TWindows["main"]>("window:main");
+    const preloadAppWindow =
+      getWindow<TWindows["preloadApp"]>("window:preload-app");
+    if (preloadAppWindow !== undefined) {
+      preloadAppWindow.hide();
+    }
+
+    if (mainWindow !== undefined) {
+      mainWindow.show();
+    }
+  });
 }
