@@ -2,6 +2,7 @@ export const windows: TWindows = {
   main: "window:main",
   updateApp: "window:update-app",
   preloadApp: "window:preload-app",
+  auth: "window:auth",
 };
 
 export const folders = {
@@ -42,12 +43,13 @@ export const messages = {
 };
 
 export const publishOptions = {
-  repo: "electron-updater",
+  repo: "electron-auth",
   owner: "trae-op",
 };
 
 export const restApi = {
   urls: {
+    googleToken: "https://oauth2.googleapis.com/token",
     githubReleases: `https://api.github.com/repos/${publishOptions.owner}/${publishOptions.repo}/releases`,
   },
 };

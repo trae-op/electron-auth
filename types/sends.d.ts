@@ -4,12 +4,14 @@ type TOpenLatestVersion = {
 
 type TEventPayloadSend = {
   restart: undefined;
-  closePreloadWindow: undefined;
+  windowClosePreload: undefined;
+  windowAuth: undefined;
   openLatestVersion: TOpenLatestVersion;
 };
 
 type TSend = {
   restart: () => void;
-  closePreloadWindow: () => void;
+  windowClosePreload: () => void;
+  windowAuth: () => void;
   openLatestVersion: (payload: TEventPayloadSend["openLatestVersion"]) => void;
 };

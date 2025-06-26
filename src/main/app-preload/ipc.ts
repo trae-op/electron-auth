@@ -5,7 +5,7 @@ import { openWindow } from "./window.js";
 export function registerIpc(): void {
   openWindow();
 
-  ipcMainOn("closePreloadWindow", async () => {
+  ipcMainOn("windowClosePreload", async () => {
     const mainWindow = getWindow<TWindows["main"]>("window:main");
     const preloadAppWindow =
       getWindow<TWindows["preloadApp"]>("window:preload-app");

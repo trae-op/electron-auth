@@ -2,7 +2,7 @@ import { app, BrowserWindow, Menu } from "electron";
 import dotenv from "dotenv";
 import path from "node:path";
 import { buildMenu, getMenu } from "./shared/menu/menu.js";
-import { isDev } from "./shared/utils.js";
+import { ipcWebContentsSend, isDev } from "./shared/utils.js";
 import { setStore } from "./shared/store.js";
 import { createWindow } from "./shared/control-window/create.js";
 import { destroyWindows } from "./shared/control-window/destroy.js";
@@ -14,6 +14,7 @@ import { checkForUpdates } from "./updater/services/checkForUpdates.js";
 import { registerIpc as registerIpcAppVersion } from "./app-version/ipc.js";
 import { registerIpc as registerIpcUpdater } from "./updater/ipc.js";
 import { registerIpc as registerIpcPreload } from "./app-preload/ipc.js";
+import { registerIpc as registerIpcAuth } from "./auth/ipc.js";
 import { menu } from "./config.js";
 
 const envPath = path.join(process.resourcesPath, ".env");
@@ -72,6 +73,7 @@ app.on("ready", () => {
     })
   );
 
+  registerIpcAuth();
   registerIpcPreload();
   registerIpcAppVersion();
   registerIpcUpdater();
@@ -108,6 +110,9 @@ function handleCloseEvents(mainWindow: BrowserWindow) {
 
   mainWindow.webContents.on("did-finish-load", () => {
     checkForUpdates();
+    ipcWebContentsSend("auth", mainWindow.webContents, {
+      isAuthenticated: false,
+    });
   });
 }
 

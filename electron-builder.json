@@ -1,5 +1,5 @@
 {
-  "appId": "com.myself.electron-updater",
+  "appId": "com.myself.electron-auth",
   "files": ["dist-main", "dist-renderer"],
   "extraResources": [
     "dist-main/preload.cjs",
@@ -30,7 +30,7 @@
     {
       "provider": "github",
       "owner": "trae-op",
-      "repo": "electron-updater",
+      "repo": "electron-auth",
       "releaseType": "release"
     }
   ]

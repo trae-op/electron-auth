@@ -11,9 +11,14 @@ type TOpenUpdateApp = {
   isOpen: boolean;
 };
 
+type TAuth = {
+  isAuthenticated: boolean;
+};
+
 type TEventPayloadReceive = {
   updateApp: TUpdateData;
   openUpdateApp: TOpenUpdateApp;
+  auth: TAuth;
 };
 
 type TUpdateData = {
@@ -31,5 +36,8 @@ type TReceive = {
   ) => TUnsubscribeFunction;
   subscribeUpdateApp: (
     callback: (payload: TEventPayloadReceive["updateApp"]) => void
+  ) => TUnsubscribeFunction;
+  subscribeWindowAuth: (
+    callback: (payload: TEventPayloadReceive["auth"]) => void
   ) => TUnsubscribeFunction;
 };

@@ -1,5 +1,5 @@
 {
-  "name": "electron-updater",
+  "name": "electron-auth",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -15,7 +15,7 @@
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:unit": "vitest src",
-    "open:mac:prod": "./dist/mac/electron-updater.app/Contents/MacOS/electron-updater",
+    "open:mac:prod": "./dist/mac/electron-auth.app/Contents/MacOS/electron-auth",
     "transpile:electron": "tsc --project src/main/tsconfig.json",
     "build:mac": "npm run transpile:electron && npm run build && electron-builder --mac --x64",
     "build:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
@@ -26,9 +26,11 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
+    "@types/jsonwebtoken": "^9.0.10",
     "compare-versions": "^6.1.1",
     "dotenv": "^16.4.7",
     "electron-updater": "^6.3.9",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "lodash.isequal": "^4.5.0",
     "react": "^19.0.0",
@@ -59,6 +61,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/trae-op/electron-updater.git"
+    "url": "https://github.com/trae-op/electron-auth.git"
   }
 }

@@ -6,6 +6,10 @@ electron.contextBridge.exposeInMainWorld("electron", {
       ipcOn("updateApp", (payload) => {
         callback(payload);
       }),
+    subscribeWindowAuth: (callback) =>
+      ipcOn("auth", (payload) => {
+        callback(payload);
+      }),
     subscribeWindowOpenUpdateApp: (callback) =>
       ipcOn("openUpdateApp", (payload) => {
         callback(payload);
@@ -15,8 +19,11 @@ electron.contextBridge.exposeInMainWorld("electron", {
     restart: () => {
       ipcSend("restart");
     },
-    closePreloadWindow: () => {
-      ipcSend("closePreloadWindow");
+    windowAuth: () => {
+      ipcSend("windowAuth");
+    },
+    windowClosePreload: () => {
+      ipcSend("windowClosePreload");
     },
     openLatestVersion: (payload) => {
       ipcSend("openLatestVersion", payload);
