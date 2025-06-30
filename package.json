@@ -19,20 +19,27 @@
     "transpile:electron": "tsc --project src/main/tsconfig.json",
     "build:mac": "npm run transpile:electron && npm run build && electron-builder --mac --x64",
     "build:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
-    "build:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64"
+    "build:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64",
+    "prisma:push": "prisma db push",
+    "prisma:studio": "prisma studio",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
+    "@prisma/client": "^6.10.1",
     "@types/jsonwebtoken": "^9.0.10",
     "compare-versions": "^6.1.1",
     "dotenv": "^16.4.7",
+    "electron-log": "^5.4.1",
+    "electron-store": "^10.1.0",
     "electron-updater": "^6.3.9",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "lodash.isequal": "^4.5.0",
+    "prisma": "^6.10.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.1"

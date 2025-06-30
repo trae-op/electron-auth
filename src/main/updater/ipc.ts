@@ -27,7 +27,7 @@ export function registerIpc(): void {
     autoUpdater.quitAndInstall();
   });
 
-  ipcMainOn("openLatestVersion", ({ updateFile }) => {
+  ipcMainOn("openLatestVersion", (_, { updateFile }) => {
     openLatestVersion(updateFile);
     destroyTray();
     destroyWindows();

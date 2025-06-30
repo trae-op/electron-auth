@@ -1,4 +1,9 @@
-import { ipcMain, type WebFrameMain, type WebContents } from "electron";
+import {
+  ipcMain,
+  type WebFrameMain,
+  type WebContents,
+  type IpcMainEvent,
+} from "electron";
 import { windows } from "../config.js";
 
 export function isDev(): boolean {
@@ -30,10 +35,10 @@ export function ipcWebContentsSend<Key extends keyof TEventPayloadReceive>(
 
 export function ipcMainOn<Key extends keyof TEventPayloadSend>(
   key: Key,
-  callback: (payload: TEventPayloadSend[Key]) => void
-) {
-  ipcMain.on(key, (_, data: TEventPayloadSend[Key]) => {
-    callback(data);
+  callback: (event: IpcMainEvent, payload: TEventPayloadSend[Key]) => void
+): void {
+  ipcMain.on(key, (event: IpcMainEvent, data: TEventPayloadSend[Key]) => {
+    callback(event, data);
   });
 }
 

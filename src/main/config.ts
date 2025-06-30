@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
 export const windows: TWindows = {
   main: "window:main",
   updateApp: "window:update-app",
@@ -40,6 +44,11 @@ export const messages = {
     errorOpenFolder: "Failed to open folder",
     errorVerifyDownload: "File does not exist",
   },
+  crash: {
+    uncaughtException: "Uncaught synchronous error in main process!",
+    unhandledRejection: "Unhandled Promise failure in main process!",
+    renderProcessGone: "The renderer process terminated unexpectedly!",
+  },
 };
 
 export const publishOptions = {
@@ -49,7 +58,15 @@ export const publishOptions = {
 
 export const restApi = {
   urls: {
-    googleToken: "https://oauth2.googleapis.com/token",
+    auth: {
+      googleOAuth2:
+        `https://accounts.google.com/o/oauth2/v2/auth?` +
+        `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
+        `redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&` +
+        `scope=${process.env.GOOGLE_SCOPES}&` +
+        `response_type=code`,
+      googleToken: "https://oauth2.googleapis.com/token",
+    },
     githubReleases: `https://api.github.com/repos/${publishOptions.owner}/${publishOptions.repo}/releases`,
   },
 };

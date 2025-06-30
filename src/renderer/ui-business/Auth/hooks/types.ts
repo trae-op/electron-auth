@@ -1,4 +1,6 @@
+export type TEventButton = React.MouseEvent<HTMLButtonElement>;
+
 export type THookControl = {
-  handleProvider: () => void;
+  handleProvider: (event: TEventButton) => void;
   handleLogout: () => void;
 };

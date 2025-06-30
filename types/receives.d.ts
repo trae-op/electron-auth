@@ -19,6 +19,7 @@ type TEventPayloadReceive = {
   updateApp: TUpdateData;
   openUpdateApp: TOpenUpdateApp;
   auth: TAuth;
+  user: TUser;
 };
 
 type TUpdateData = {
@@ -39,5 +40,8 @@ type TReceive = {
   ) => TUnsubscribeFunction;
   subscribeWindowAuth: (
     callback: (payload: TEventPayloadReceive["auth"]) => void
+  ) => TUnsubscribeFunction;
+  subscribeUser: (
+    callback: (payload: TEventPayloadReceive["user"]) => void
   ) => TUnsubscribeFunction;
 };

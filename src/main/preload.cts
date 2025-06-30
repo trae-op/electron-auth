@@ -14,13 +14,20 @@ electron.contextBridge.exposeInMainWorld("electron", {
       ipcOn("openUpdateApp", (payload) => {
         callback(payload);
       }),
+    subscribeUser: (callback) =>
+      ipcOn("user", (payload) => {
+        callback(payload);
+      }),
   },
   send: {
     restart: () => {
       ipcSend("restart");
     },
-    windowAuth: () => {
-      ipcSend("windowAuth");
+    checkUser: () => {
+      ipcSend("checkUser");
+    },
+    windowAuth: (payload) => {
+      ipcSend("windowAuth", payload);
     },
     windowClosePreload: () => {
       ipcSend("windowClosePreload");

@@ -15,7 +15,11 @@ import { registerIpc as registerIpcAppVersion } from "./app-version/ipc.js";
 import { registerIpc as registerIpcUpdater } from "./updater/ipc.js";
 import { registerIpc as registerIpcPreload } from "./app-preload/ipc.js";
 import { registerIpc as registerIpcAuth } from "./auth/ipc.js";
+import { registerIpc as registerIpcUser } from "./user/ipc.js";
+import { createUser } from "./user/service.js";
+import { crash } from "./crash/service.js";
 import { menu } from "./config.js";
+import { databaseService } from "./shared/databaseService.js";
 
 const envPath = path.join(process.resourcesPath, ".env");
 dotenv.config(!isDev() ? { path: envPath } : undefined);
@@ -26,7 +30,10 @@ Menu.setApplicationMenu(null);
 
 setFeedURL();
 
-app.on("ready", () => {
+crash();
+
+app.on("ready", async () => {
+  await databaseService.connect();
   const mainWindow = createWindow<TWindows["main"]>({
     hash: "window:main",
     isCache: true,
@@ -73,7 +80,8 @@ app.on("ready", () => {
     })
   );
 
-  registerIpcAuth();
+  registerIpcUser();
+  registerIpcAuth({ createUser });
   registerIpcPreload();
   registerIpcAppVersion();
   registerIpcUpdater();
@@ -96,7 +104,9 @@ function handleCloseEvents(mainWindow: BrowserWindow) {
     }
   });
 
-  app.on("before-quit", () => {
+  app.on("before-quit", async () => {
+    await databaseService.disconnect();
+
     isWillClose = true;
 
     destroyTray();

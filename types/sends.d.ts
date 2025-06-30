@@ -2,16 +2,22 @@ type TOpenLatestVersion = {
   updateFile: string;
 };
 
+type TWindowAuth = {
+  provider: TProviders;
+};
+
 type TEventPayloadSend = {
   restart: undefined;
   windowClosePreload: undefined;
-  windowAuth: undefined;
+  checkUser: undefined;
+  windowAuth: TWindowAuth;
   openLatestVersion: TOpenLatestVersion;
 };
 
 type TSend = {
   restart: () => void;
   windowClosePreload: () => void;
-  windowAuth: () => void;
+  checkUser: () => void;
+  windowAuth: (payload: TEventPayloadSend["windowAuth"]) => void;
   openLatestVersion: (payload: TEventPayloadSend["openLatestVersion"]) => void;
 };

@@ -11,7 +11,9 @@
       "../../types/invokes",
       "../../types/collected",
       "../../types/windows",
-      "../../types/files"
+      "../../types/files",
+      "../../types/providers",
+      "../../types/user"
     ]
   }
 }
