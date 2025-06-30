@@ -8,7 +8,7 @@ import { logout } from "./services/main.js";
 import { TProvidersIpc } from "./types.js";
 import { getElectronStorage, setElectronStorage } from "../shared/store.js";
 
-export function registerIpc({ createUser }: TProvidersIpc): void {
+export function registerIpc({ createUser, getUser }: TProvidersIpc): void {
   ipcMainOn("logout", async () => {
     const mainWindow = getWindow<TWindows["main"]>("window:main");
 
@@ -47,12 +47,19 @@ export function registerIpc({ createUser }: TProvidersIpc): void {
 
         let response: User | undefined = undefined;
         if (parseUser !== undefined) {
-          response = await createUser({
-            name: parseUser.name,
+          const found = await getUser({
             email: parseUser.email,
-            picture: parseUser.picture,
-            provider: "google",
           });
+
+          response =
+            found !== null
+              ? found
+              : await createUser({
+                  name: parseUser.name,
+                  email: parseUser.email,
+                  picture: parseUser.picture,
+                  provider: "google",
+                });
         }
 
         if (response !== undefined && mainWindow !== undefined) {
