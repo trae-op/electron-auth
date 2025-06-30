@@ -2,10 +2,10 @@ import { getElectronStorage } from "../shared/store.js";
 import { ipcMainOn } from "../shared/utils.js";
 
 export function registerIpc(): void {
-  ipcMainOn("checkUser", (event) => {
+  ipcMainOn("user", (event) => {
     const user = getElectronStorage("user");
     if (user !== undefined) {
-      event.reply("checkUser", {
+      event.reply("user", {
         user,
       });
     }

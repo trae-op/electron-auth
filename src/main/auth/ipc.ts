@@ -1,11 +1,24 @@
 import { type Event, type WebContentsWillRedirectEventParams } from "electron";
+import { User } from "@prisma/client";
 import { ipcMainOn, ipcWebContentsSend } from "../shared/utils.js";
+import { getWindow } from "../shared/control-window/receive.js";
 import { openWindow } from "./window.js";
 import { exchangeCodeForTokens, parseIdToken } from "./services/google.js";
 import { TProvidersIpc } from "./types.js";
-import { setElectronStorage } from "../shared/store.js";
+import { getElectronStorage, setElectronStorage } from "../shared/store.js";
 
 export function registerIpc({ createUser }: TProvidersIpc): void {
+  ipcMainOn("checkAuth", () => {
+    const mainWindow = getWindow<TWindows["main"]>("window:main");
+    const user = getElectronStorage("user");
+
+    if (mainWindow !== undefined) {
+      ipcWebContentsSend("auth", mainWindow.webContents, {
+        isAuthenticated: Boolean(user),
+      });
+    }
+  });
+
   ipcMainOn("windowAuth", (_, { provider }) => {
     const window = openWindow(provider);
 
@@ -22,7 +35,7 @@ export function registerIpc({ createUser }: TProvidersIpc): void {
           parseUser = parseIdToken(tokens.id_token);
         }
 
-        let response = undefined;
+        let response: User | undefined = undefined;
         if (parseUser !== undefined) {
           response = await createUser({
             name: parseUser.name,
@@ -33,11 +46,11 @@ export function registerIpc({ createUser }: TProvidersIpc): void {
         }
 
         if (response !== undefined) {
-          window.close();
           setElectronStorage("user", response);
           ipcWebContentsSend("auth", window.webContents, {
             isAuthenticated: true,
           });
+          window.close();
         }
       }
     );

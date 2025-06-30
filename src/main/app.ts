@@ -2,7 +2,7 @@ import { app, BrowserWindow, Menu } from "electron";
 import dotenv from "dotenv";
 import path from "node:path";
 import { buildMenu, getMenu } from "./shared/menu/menu.js";
-import { ipcWebContentsSend, isDev } from "./shared/utils.js";
+import { isDev } from "./shared/utils.js";
 import { setStore } from "./shared/store.js";
 import { createWindow } from "./shared/control-window/create.js";
 import { destroyWindows } from "./shared/control-window/destroy.js";
@@ -80,8 +80,8 @@ app.on("ready", async () => {
     })
   );
 
-  registerIpcUser();
   registerIpcAuth({ createUser });
+  registerIpcUser();
   registerIpcPreload();
   registerIpcAppVersion();
   registerIpcUpdater();
@@ -120,9 +120,6 @@ function handleCloseEvents(mainWindow: BrowserWindow) {
 
   mainWindow.webContents.on("did-finish-load", () => {
     checkForUpdates();
-    ipcWebContentsSend("auth", mainWindow.webContents, {
-      isAuthenticated: false,
-    });
   });
 }
 

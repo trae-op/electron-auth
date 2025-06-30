@@ -9,7 +9,8 @@ type TWindowAuth = {
 type TEventPayloadSend = {
   restart: undefined;
   windowClosePreload: undefined;
-  checkUser: undefined;
+  user: undefined;
+  checkAuth: undefined;
   windowAuth: TWindowAuth;
   openLatestVersion: TOpenLatestVersion;
 };
@@ -17,7 +18,8 @@ type TEventPayloadSend = {
 type TSend = {
   restart: () => void;
   windowClosePreload: () => void;
-  checkUser: () => void;
+  user: () => void;
+  checkAuth: () => void;
   windowAuth: (payload: TEventPayloadSend["windowAuth"]) => void;
   openLatestVersion: (payload: TEventPayloadSend["openLatestVersion"]) => void;
 };

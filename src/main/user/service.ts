@@ -1,4 +1,3 @@
-import { dialog } from "electron";
 import { databaseService } from "../shared/databaseService.js";
 import { User } from "@prisma/client";
 import { logger } from "../shared/logger.js";
@@ -30,12 +29,11 @@ export async function createUser({
   }
 }
 
-export function getUser(
-  where: Partial<User>
-): Promise<User | null> | undefined {
+export async function getUser(where: Partial<User>): Promise<User | null> {
   try {
     const client = databaseService.client;
-    return client.user.findFirst({
+
+    return await client.user.findFirst({
       where,
     });
   } catch (error) {

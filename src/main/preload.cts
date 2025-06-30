@@ -23,8 +23,11 @@ electron.contextBridge.exposeInMainWorld("electron", {
     restart: () => {
       ipcSend("restart");
     },
-    checkUser: () => {
-      ipcSend("checkUser");
+    user: () => {
+      ipcSend("user");
+    },
+    checkAuth: () => {
+      ipcSend("checkAuth");
     },
     windowAuth: (payload) => {
       ipcSend("windowAuth", payload);

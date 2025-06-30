@@ -3,6 +3,7 @@ import { setStore } from "../shared/store.js";
 import { checkForUpdates } from "./services/checkForUpdates.js";
 
 let isCheckFirst = true;
+let isEvents = true;
 
 export function openWindow(): void {
   const window = createWindow<TWindows["updateApp"]>({
@@ -19,20 +20,23 @@ export function openWindow(): void {
     },
   });
 
-  window.webContents.on("did-finish-load", () => {
-    setStore("updateWindow", window);
+  if (isEvents) {
+    isEvents = false;
+    window.webContents.on("did-finish-load", () => {
+      setStore("updateWindow", window);
 
-    if (isCheckFirst) {
-      checkForUpdates();
-      isCheckFirst = false;
-    }
-  });
+      if (isCheckFirst) {
+        checkForUpdates();
+        isCheckFirst = false;
+      }
+    });
 
-  window.on("show", () => {
-    setStore("updateWindow", window);
+    window.on("show", () => {
+      setStore("updateWindow", window);
 
-    if (!isCheckFirst) {
-      checkForUpdates();
-    }
-  });
+      if (!isCheckFirst) {
+        checkForUpdates();
+      }
+    });
+  }
 }
