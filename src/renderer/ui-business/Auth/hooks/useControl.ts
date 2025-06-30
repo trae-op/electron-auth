@@ -10,7 +10,9 @@ export const useControl = (): THookControl => {
     });
   }, []);
 
-  const handleLogout = useCallback(() => {}, []);
+  const handleLogout = useCallback(() => {
+    window.electron.send.logout();
+  }, []);
 
   const value = useMemo(
     () => ({

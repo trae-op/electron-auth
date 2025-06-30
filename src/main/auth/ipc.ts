@@ -4,10 +4,19 @@ import { ipcMainOn, ipcWebContentsSend } from "../shared/utils.js";
 import { getWindow } from "../shared/control-window/receive.js";
 import { openWindow } from "./window.js";
 import { exchangeCodeForTokens, parseIdToken } from "./services/google.js";
+import { logout } from "./services/main.js";
 import { TProvidersIpc } from "./types.js";
 import { getElectronStorage, setElectronStorage } from "../shared/store.js";
 
 export function registerIpc({ createUser }: TProvidersIpc): void {
+  ipcMainOn("logout", async () => {
+    const mainWindow = getWindow<TWindows["main"]>("window:main");
+
+    if (mainWindow !== undefined) {
+      logout(mainWindow);
+    }
+  });
+
   ipcMainOn("checkAuth", () => {
     const mainWindow = getWindow<TWindows["main"]>("window:main");
     const user = getElectronStorage("user");
@@ -21,6 +30,7 @@ export function registerIpc({ createUser }: TProvidersIpc): void {
 
   ipcMainOn("windowAuth", (_, { provider }) => {
     const window = openWindow(provider);
+    const mainWindow = getWindow<TWindows["main"]>("window:main");
 
     window.webContents.on(
       "will-redirect",
@@ -45,9 +55,9 @@ export function registerIpc({ createUser }: TProvidersIpc): void {
           });
         }
 
-        if (response !== undefined) {
+        if (response !== undefined && mainWindow !== undefined) {
           setElectronStorage("user", response);
-          ipcWebContentsSend("auth", window.webContents, {
+          ipcWebContentsSend("auth", mainWindow.webContents, {
             isAuthenticated: true,
           });
           window.close();

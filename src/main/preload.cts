@@ -29,6 +29,9 @@ electron.contextBridge.exposeInMainWorld("electron", {
     checkAuth: () => {
       ipcSend("checkAuth");
     },
+    logout: () => {
+      ipcSend("logout");
+    },
     windowAuth: (payload) => {
       ipcSend("windowAuth", payload);
     },

@@ -11,7 +11,7 @@
   ],
   "mac": {
     "target": "dmg",
-    "icon": "./src/assets/react-512x512.png",
+    "icon": "./src/assets/512x512.png",
     "identity": null
   },
   "linux": {
@@ -20,7 +20,7 @@
   },
   "win": {
     "target": "nsis",
-    "icon": "./src/assets/react-256x256.png"
+    "icon": "./src/assets/256x256.png"
   },
   "nsis": {
     "oneClick": false,

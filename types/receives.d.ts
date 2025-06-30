@@ -19,7 +19,9 @@ type TEventPayloadReceive = {
   updateApp: TUpdateData;
   openUpdateApp: TOpenUpdateApp;
   auth: TAuth;
-  user: TUser;
+  user: {
+    user: TUser;
+  };
 };
 
 type TUpdateData = {
