@@ -11,6 +11,7 @@
 - [Dependencies](#dependencies)
 - [Build & Distribution](#build--distribution)
   - [Configuration Notes for `electron-builder`](#configuration-notes-for-electron-builder)
+- [electron-builder.json Configuration](#electron-builderjson-configuration)
 
 This repository serves as a robust boilerplate for starting new Electron.js desktop applications. It comes pre-configured with essential features and a modern development stack, allowing developers to quickly bootstrap their projects.
 
@@ -128,3 +129,78 @@ The project uses `electron-builder` for packaging and distributing the applicati
 - **`main` field in `package.json`**: Points to `dist-main/app.js`, indicating the compiled entry point for the Electron main process.
 - **`files` and `extraResources`**: Ensure that all necessary files, including Prisma engines and any other native modules or assets, are correctly included in the final build. The current setup should handle most cases, but if you encounter issues with missing files, check the `files` and `extraResources` arrays in your `electron-builder` configuration (often defined directly in `package.json` under the `build` key or in a separate `electron-builder.yml` file).
 - **`version` field**: The `version` in `package.json` is crucial for `electron-updater` to determine if a new update is available. Increment this version number for each new release.
+
+## electron-builder.json Configuration
+
+This project uses a dedicated `electron-builder.json` file at the root of the project to configure the packaging and distribution process. This file centralizes all build-related settings for `electron-builder`.
+
+Here is the content of your `electron-builder.json`:
+
+```json
+{
+  "appId": "com.myself.electron-auth",
+  "files": ["dist-main", "dist-renderer"],
+  "extraResources": [
+    "dist-main/preload.cjs",
+    "src/assets/**",
+    {
+      "from": ".env.production",
+      "to": ".env"
+    }
+  ],
+  "mac": {
+    "target": "dmg",
+    "icon": "./src/assets/512x512.png",
+    "identity": null
+  },
+  "linux": {
+    "target": "AppImage",
+    "category": "Utility"
+  },
+  "win": {
+    "target": "nsis",
+    "icon": "./src/assets/256x256.png"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "trae-op",
+      "repo": "electron-auth",
+      "releaseType": "release"
+    }
+  ]
+}
+```
+
+**Explanation of `electron-builder.json` fields:**
+
+- **`appId`**: A unique identifier for your application (e.g., `com.myself.electron-auth`). This is critical for auto-updates and system identification.
+- **`files`**: An array specifying which directories and files from your project should be included in the final packaged application.
+  - `dist-main`: Your compiled Electron main process code.
+  - `dist-renderer`: Your built React frontend code.
+- **`extraResources`**: A list of additional files or directories that should be included in the app package but are not part of the main `files` array. These are typically accessed at runtime.
+  - `dist-main/preload.cjs`: The preload script for Electron.
+  - `src/assets/**`: All files within the `src/assets` directory.
+  - `{ "from": ".env.production", "to": ".env" }`: Copies the `.env.production` file to `.env` in the packaged app, useful for environment-specific configurations.
+- **`mac`**: Configuration specific to macOS builds.
+  - `target`: The format of the macOS package (e.g., `dmg` for disk image).
+  - `icon`: Path to the application icon for macOS.
+  - `identity`: Code signing identity. Set to `null` if not code signing.
+- **`linux`**: Configuration specific to Linux builds.
+  - `target`: The format of the Linux package (e.g., `AppImage`).
+  - `category`: The application category for Linux desktop environments.
+- **`win`**: Configuration specific to Windows builds.
+  - `target`: The format of the Windows installer (e.g., `nsis` for Nullsoft Scriptable Install System).
+  - `icon`: Path to the application icon for Windows.
+- **`nsis`**: Settings for the NSIS installer on Windows.
+  - `oneClick`: If `false`, the installer will provide a standard installation wizard.
+  - `allowToChangeInstallationDirectory`: If `true`, users can specify the installation path.
+- **`publish`**: Defines how the application should be published for auto-updates.
+  - `provider`: The service used for publishing releases (e.g., `github`).
+  - `owner`: The GitHub username or organization that owns the repository.
+  - `repo`: The name of the GitHub repository.
+  - `releaseType`: Specifies the type of release to create (e.g., `release`).
