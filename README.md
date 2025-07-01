@@ -1,5 +1,17 @@
 # Electron Auth Project
 
+- [Key Features](#key-features)
+- [Technologies Used](#technologies-used)
+- [Project Setup](#project-setup)
+  - [Clone the repository](#clone-the-repository)
+  - [Install dependencies](#install-dependencies)
+  - [Database Setup (Prisma & PostgreSQL/SQLite)](#database-setup-prisma--postgresqlsqlite)
+  - [Google OAuth Configuration](#google-oauth-configuration)
+- [Scripts Overview](#scripts-overview)
+- [Dependencies](#dependencies)
+- [Build & Distribution](#build--distribution)
+  - [Configuration Notes for `electron-builder`](#configuration-notes-for-electron-builder)
+
 This repository serves as a robust boilerplate for starting new Electron.js desktop applications. It comes pre-configured with essential features and a modern development stack, allowing developers to quickly bootstrap their projects.
 
 ## Key Features
