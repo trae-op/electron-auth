@@ -26,6 +26,11 @@ jobs:
       - name: Run Build for macOS
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+          GOOGLE_SCOPES: ${{ secrets.GOOGLE_SCOPES }}
         run: npm run transpile:electron && npm run build && npx electron-builder --mac --x64 --publish=always
 
   build-windows:
@@ -45,4 +50,9 @@ jobs:
       - name: Run Build for Windows
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+          GOOGLE_SCOPES: ${{ secrets.GOOGLE_SCOPES }}
         run: npm run transpile:electron && npm run build && npx electron-builder --win --x64 --publish=always
