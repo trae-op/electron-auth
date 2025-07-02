@@ -4,6 +4,9 @@
   "extraResources": [
     "dist-main/preload.cjs",
     "src/assets/**",
+    "prisma/**/*",
+    "node_modules/.prisma/**/*",
+    "node_modules/@prisma/client/**/*",
     {
       "from": ".env.production",
       "to": ".env"

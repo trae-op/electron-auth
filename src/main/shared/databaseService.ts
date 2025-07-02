@@ -1,9 +1,10 @@
+// import { PrismaClient } from "./prisma/prisma-client/index.js";
 import { PrismaClient } from "@prisma/client";
 import { logger } from "./logger.js";
 
 // Global variable to hold the Prisma Client instance.
 // Initialized to null, it will be set once the DatabaseService is instantiated.
-let prisma: PrismaClient | null = null;
+let prisma: InstanceType<typeof PrismaClient> | null = null;
 
 class DatabaseService {
   constructor() {
@@ -21,7 +22,7 @@ class DatabaseService {
   // Getter for the Prisma Client instance.
   // Throws an error if accessed before initialization, though with the singleton pattern
   // this error should ideally not be hit if `databaseService` is always instantiated.
-  public get client(): PrismaClient {
+  public get client(): InstanceType<typeof PrismaClient> {
     if (!prisma) {
       const errorMessage =
         "Prisma Client not initialized. Call DatabaseService constructor first.";
