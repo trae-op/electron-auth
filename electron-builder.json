@@ -6,11 +6,7 @@
     "src/assets/**",
     "prisma/**/*",
     "node_modules/.prisma/**/*",
-    "node_modules/@prisma/client/**/*",
-    {
-      "from": ".env.production",
-      "to": ".env"
-    }
+    "node_modules/@prisma/client/**/*"
   ],
   "mac": {
     "target": "dmg",

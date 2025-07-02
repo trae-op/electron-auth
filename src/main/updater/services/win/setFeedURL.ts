@@ -11,8 +11,6 @@ export function setFeedURL() {
       provider: "github",
       repo: publishOptions.repo,
       owner: publishOptions.owner,
-      private: true,
-      token: process.env.GH_TOKEN,
     });
   }
 }
