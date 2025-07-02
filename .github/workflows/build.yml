@@ -23,6 +23,9 @@ jobs:
       - name: Setup dependencies
         run: npm install
 
+      - name: Postinstall
+        run: npm run postinstall
+
       - name: Run Build for macOS
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -46,6 +49,9 @@ jobs:
 
       - name: Setup dependencies
         run: npm install
+
+      - name: Postinstall
+        run: npm run postinstall
 
       - name: Run Build for Windows
         env:
