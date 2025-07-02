@@ -18,7 +18,6 @@ export async function checkForUpdate({ eventCallBack }: TOptionsUpdater) {
     const response = await fetch(`${restApi.urls.githubReleases}/latest`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${process.env.GH_TOKEN}`,
         Accept: "application/json",
       },
     });

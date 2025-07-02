@@ -6,7 +6,8 @@
     "src/assets/**",
     "prisma/**/*",
     "node_modules/.prisma/**/*",
-    "node_modules/@prisma/client/**/*"
+    "node_modules/@prisma/client/**/*",
+    ".env"
   ],
   "mac": {
     "target": "dmg",
