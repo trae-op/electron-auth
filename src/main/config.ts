@@ -58,14 +58,16 @@ export const publishOptions = {
 
 export const restApi = {
   urls: {
+    base: process.env.BASE_REST_API,
+    baseApi: "/api",
     auth: {
-      googleOAuth2:
-        `https://accounts.google.com/o/oauth2/v2/auth?` +
-        `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
-        `redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&` +
-        `scope=${process.env.GOOGLE_SCOPES}&` +
-        `response_type=code`,
-      googleToken: "https://oauth2.googleapis.com/token",
+      base: "/auth",
+      google: "/google",
+      facebook: "/facebook",
+    },
+    user: {
+      base: "/user",
+      byId: (id: string) => `/${id}`,
     },
     githubReleases: `https://api.github.com/repos/${publishOptions.owner}/${publishOptions.repo}/releases`,
   },

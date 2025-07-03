@@ -1,13 +1,62 @@
-import { getElectronStorage } from "../shared/store.js";
-import { ipcMainOn } from "../shared/utils.js";
+import { IpcHandler } from "../@core/decorators/ipc-handler.js";
+import { getWindow as getWindows } from "../@core/control-window/receive.js";
+import { ipcMainOn, ipcWebContentsSend } from "../$shared/utils.js";
+import { UserService } from "./service.js";
+import { getElectronStorage } from "../$shared/store.js";
+import { restApi } from "../config.js";
 
-export function registerIpc(): void {
-  ipcMainOn("user", (event) => {
-    const user = getElectronStorage("user");
-    if (user !== undefined) {
-      event.reply("user", {
-        user,
-      });
+@IpcHandler()
+export class UserIpc {
+  constructor(private userService: UserService) {}
+
+  onInit(): void {
+    ipcMainOn("checkUser", async (event) => {
+      const userId = getElectronStorage("userId");
+      const cacheUser = this.cacheUser(userId);
+      const mainWindow = getWindows<TWindows["main"]>("window:main");
+
+      if (mainWindow !== undefined) {
+        ipcWebContentsSend("sync", mainWindow.webContents, {
+          isUser: false,
+        });
+
+        if (cacheUser !== undefined) {
+          event.reply("checkUser", {
+            user: cacheUser,
+          });
+        }
+
+        const user = userId ? await this.userService.byId(userId) : undefined;
+        if (user !== undefined) {
+          event.reply("checkUser", {
+            user,
+          });
+        }
+
+        ipcWebContentsSend("sync", mainWindow.webContents, {
+          isUser: true,
+        });
+      }
+    });
+  }
+
+  private cacheUser(userId: string | undefined): TUser | undefined {
+    let user: TUser | undefined = undefined;
+    const cacheResponse = getElectronStorage("response");
+
+    if (cacheResponse !== undefined && userId !== undefined) {
+      user =
+        cacheResponse[
+          `${restApi.urls.base}${restApi.urls.baseApi}${
+            restApi.urls.user.base
+          }${restApi.urls.user.byId(userId)}`
+        ];
     }
-  });
+
+    if (user !== undefined) {
+      return user;
+    }
+
+    return undefined;
+  }
 }

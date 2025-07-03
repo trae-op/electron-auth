@@ -37,6 +37,8 @@ export function registerIpc({ createUser, getUser }: TProvidersIpc): void {
       async (_: Event<WebContentsWillRedirectEventParams>, url: string) => {
         const callBackUrl = new URL(url);
         const searchParams = new URLSearchParams(callBackUrl.search);
+        const token = searchParams.get("token");
+        const userId = searchParams.get("userId");
         const code = searchParams.get("code");
 
         let parseUser = undefined;

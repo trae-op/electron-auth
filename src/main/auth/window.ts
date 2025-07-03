@@ -1,18 +1,14 @@
 import { BrowserWindow, session } from "electron";
 import { createWindow } from "../shared/control-window/create.js";
 import { restApi } from "../config.js";
+import { TLessProviders } from "./types.js";
 
-export function openWindow(provider: TProviders): BrowserWindow {
+export function openWindow(provider: keyof TLessProviders): BrowserWindow {
   const authSession = session.fromPartition("persist:auth");
-  let loadURL = "";
-
-  if (provider === "google") {
-    loadURL = restApi.urls.auth.googleOAuth2;
-  }
 
   return createWindow<TWindows["auth"]>({
     hash: "window:auth",
-    loadURL,
+    loadURL: `${restApi.urls.base}${restApi.urls.baseApi}${restApi.urls.auth.base}${restApi.urls.auth[provider]}`,
     options: {
       autoHideMenuBar: true,
       minimizable: false,

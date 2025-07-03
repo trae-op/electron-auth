@@ -4,10 +4,14 @@
   "extraResources": [
     "dist-main/preload.cjs",
     "src/assets/**",
-    "prisma/**/*",
-    "node_modules/.prisma/**/*",
-    "node_modules/@prisma/client/**/*",
-    ".env"
+    {
+      "from": ".env.production",
+      "to": ".env"
+    },
+    {
+      "from": "./src/main/app-preload/spinner.html",
+      "to": "dist-main/spinner.html"
+    }
   ],
   "mac": {
     "target": "dmg",

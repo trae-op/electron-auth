@@ -31,6 +31,7 @@
     "@mui/material": "^7.0.1",
     "@prisma/client": "^6.10.1",
     "@types/jsonwebtoken": "^9.0.10",
+    "axios": "^1.10.0",
     "compare-versions": "^6.1.1",
     "dotenv": "^16.4.7",
     "electron-log": "^5.4.1",

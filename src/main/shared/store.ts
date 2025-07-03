@@ -6,8 +6,14 @@ type TStore = {
   [key: string]: any | undefined;
 };
 
+export type TCacheResponse = {
+  [key: string]: any | undefined;
+};
+
 type TElectronStore = {
-  user: User;
+  authToken: string;
+  userId: string;
+  response: TCacheResponse;
 };
 
 const store = new Map<keyof TStore, TStore[keyof TStore]>();
