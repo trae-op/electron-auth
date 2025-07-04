@@ -1,6 +1,6 @@
 import { messages } from "../../../config.js";
-import { notification } from "../../../shared/notification.js";
-import { setStore } from "../../../shared/store.js";
+import { notification } from "../../../@shared/notification.js";
+import { setStore } from "../../../@shared/store.js";
 import { checkForUpdate } from "./checkForUpdate.js";
 import { sendUpdateInfo } from "../sendUpdateInfo.js";
 

@@ -1,5 +1,5 @@
 import pkg from "electron-updater";
-import { isDev, isPlatform } from "../../../shared/utils.js";
+import { isDev, isPlatform } from "../../../@shared/utils.js";
 import { publishOptions } from "../../../config.js";
 
 const { autoUpdater } = pkg;

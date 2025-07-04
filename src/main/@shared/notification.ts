@@ -1,7 +1,7 @@
 import { Notification } from "electron";
 import path from "node:path";
 import { icons } from "../config.js";
-import { getAssetsPath } from "./pathResolver.js";
+import { getAssetsPath } from "./path-resolver.js";
 
 export let notification: Notification | undefined = undefined;
 

@@ -1,5 +1,5 @@
-import { ipcMainOn } from "../shared/utils.js";
-import { getWindow } from "../shared/control-window/receive.js";
+import { ipcMainOn } from "../@shared/utils.js";
+import { getWindow } from "../@shared/control-window/receive.js";
 import { openWindow } from "./window.js";
 
 export function registerIpc(): void {

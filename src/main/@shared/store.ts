@@ -1,6 +1,4 @@
 import ElectronStorage from "electron-store";
-// import { User } from "./prisma/prisma-client/index.js";
-import { User } from "@prisma/client";
 
 type TStore = {
   [key: string]: any | undefined;

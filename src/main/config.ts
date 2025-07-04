@@ -49,6 +49,10 @@ export const messages = {
     unhandledRejection: "Unhandled Promise failure in main process!",
     renderProcessGone: "The renderer process terminated unexpectedly!",
   },
+  auth: {
+    errorTokenUserMissing: "Token or userId is missing!",
+    userAlreadyExists: "User already exists!",
+  },
 };
 
 export const publishOptions = {

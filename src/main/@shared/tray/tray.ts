@@ -1,6 +1,6 @@
 import { app, Menu, Tray } from "electron";
 import path from "node:path";
-import { getAssetsPath } from "../pathResolver.js";
+import { getAssetsPath } from "../path-resolver.js";
 import { isPlatform } from "../utils.js";
 import { menu, icons } from "../../config.js";
 import type { TItem } from "./types.js";

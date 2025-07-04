@@ -1,9 +1,9 @@
 import { dialog } from "electron";
 import pkg from "electron-updater";
-import { isDev, isPlatform } from "../../../shared/utils.js";
-import { notification } from "../../../shared/notification.js";
+import { isDev, isPlatform } from "../../../@shared/utils.js";
+import { notification } from "../../../@shared/notification.js";
 import { messages } from "../../../config.js";
-import { setStore } from "../../../shared/store.js";
+import { setStore } from "../../../@shared/store.js";
 import { sendUpdateInfo } from "../sendUpdateInfo.js";
 
 const { autoUpdater } = pkg;

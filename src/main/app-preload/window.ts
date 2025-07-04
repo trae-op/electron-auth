@@ -1,7 +1,7 @@
 import { app } from "electron";
 import path from "node:path";
-import { createWindow } from "../shared/control-window/create.js";
-import { isDev } from "../shared/utils.js";
+import { createWindow } from "../@shared/control-window/create.js";
+import { isDev } from "../@shared/utils.js";
 
 export function openWindow(): void {
   createWindow<TWindows["preloadApp"]>({

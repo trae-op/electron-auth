@@ -1,4 +1,4 @@
-import { getStore } from "../../shared/store.js";
+import { getStore } from "../../@shared/store.js";
 
 export function isUpdateProcess() {
   const isUpdateProcess = getStore("updateProcess");

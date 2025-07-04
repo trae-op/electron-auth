@@ -1,8 +1,8 @@
 import { app } from "electron";
 import pkg from "electron-updater";
-import { destroyWindows } from "../shared/control-window/destroy.js";
-import { buildTray, destroyTray, getTrayMenu } from "../shared/tray/tray.js";
-import { ipcMainOn } from "../shared/utils.js";
+import { destroyWindows } from "../@shared/control-window/destroy.js";
+import { buildTray, destroyTray, getTrayMenu } from "../@shared/tray/tray.js";
+import { ipcMainOn } from "../@shared/utils.js";
 import { openLatestVersion } from "./services/mac/openLatestVersion.js";
 import { openWindow } from "./window.js";
 

@@ -1,5 +1,5 @@
 import { BrowserWindow, session } from "electron";
-import { createWindow } from "../shared/control-window/create.js";
+import { createWindow } from "../@shared/control-window/create.js";
 import { restApi } from "../config.js";
 import { TLessProviders } from "./types.js";
 

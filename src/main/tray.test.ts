@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu } from "electron";
 import { expect, Mock, test, vi } from "vitest";
-import { buildTray, getTrayMenu } from "./shared/tray/tray.js";
+import { buildTray, getTrayMenu } from "./@shared/tray/tray.js";
 
 vi.mock("electron", () => {
   return {

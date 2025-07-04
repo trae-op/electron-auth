@@ -1,5 +1,6 @@
 import { restApi } from "../config.js";
-import { get } from "../rest-api/service.js";
+import { get } from "../@shared/services/rest-api/service.js";
+import { showErrorMessages } from "../@shared/services/error-messages.js";
 
 export async function getUserById<R extends TUser>(
   id: string
@@ -14,7 +15,10 @@ export async function getUserById<R extends TUser>(
   );
 
   if (response.error !== undefined) {
-    return;
+    showErrorMessages({
+      title: "Error request by getUserById",
+      body: response.error.message,
+    });
   }
 
   return response.data;

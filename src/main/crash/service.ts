@@ -1,8 +1,8 @@
 import { app, dialog } from "electron";
 import { TDestroyProcess } from "./types.js";
 import { messages } from "../config.js";
-import { getWindow } from "../shared/control-window/receive.js";
-import { destroyTray } from "../shared/tray/tray.js";
+import { getWindow } from "../@shared/control-window/receive.js";
+import { destroyTray } from "../@shared/tray/tray.js";
 
 export function crash() {
   process.on("uncaughtException", (error) => {

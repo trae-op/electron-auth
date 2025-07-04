@@ -1,29 +1,26 @@
 import { type Event, type WebContentsWillRedirectEventParams } from "electron";
-import { User } from "@prisma/client";
-import { ipcMainOn, ipcWebContentsSend } from "../shared/utils.js";
-import { getWindow } from "../shared/control-window/receive.js";
+import { ipcMainOn, ipcWebContentsSend } from "../@shared/utils.js";
+import { getWindow } from "../@shared/control-window/receive.js";
 import { openWindow } from "./window.js";
-import { exchangeCodeForTokens, parseIdToken } from "./services/google.js";
-import { logout } from "./services/main.js";
-import { TProvidersIpc } from "./types.js";
-import { getElectronStorage, setElectronStorage } from "../shared/store.js";
+import { getElectronStorage, setElectronStorage } from "../@shared/store.js";
+import { cacheUser } from "../@shared/cache-responses.js";
+import { messages } from "../config.js";
+import { logout } from "../@shared/services/logout.js";
+import { showErrorMessages } from "../@shared/services/error-messages.js";
 
-export function registerIpc({ createUser, getUser }: TProvidersIpc): void {
-  ipcMainOn("logout", async () => {
-    const mainWindow = getWindow<TWindows["main"]>("window:main");
-
-    if (mainWindow !== undefined) {
-      logout(mainWindow);
-    }
+export function registerIpc(): void {
+  ipcMainOn("logout", () => {
+    logout();
   });
 
   ipcMainOn("checkAuth", () => {
     const mainWindow = getWindow<TWindows["main"]>("window:main");
-    const user = getElectronStorage("user");
+    const userId = getElectronStorage("userId");
+    const userFromCache = cacheUser(userId);
 
     if (mainWindow !== undefined) {
       ipcWebContentsSend("auth", mainWindow.webContents, {
-        isAuthenticated: Boolean(user),
+        isAuthenticated: Boolean(userFromCache),
       });
     }
   });
@@ -35,40 +32,41 @@ export function registerIpc({ createUser, getUser }: TProvidersIpc): void {
     window.webContents.on(
       "will-redirect",
       async (_: Event<WebContentsWillRedirectEventParams>, url: string) => {
+        const isVerify = /api\/auth\/verify\?token\=/g.test(url);
+        const isUserExists = /api\/auth\/user\-exists\?message\=/g.test(url);
         const callBackUrl = new URL(url);
         const searchParams = new URLSearchParams(callBackUrl.search);
-        const token = searchParams.get("token");
-        const userId = searchParams.get("userId");
-        const code = searchParams.get("code");
 
-        let parseUser = undefined;
-        if (code !== null) {
-          const tokens = await exchangeCodeForTokens(code);
-          parseUser = parseIdToken(tokens.id_token);
+        if (isUserExists) {
+          window.close();
+          const message = searchParams.get("message");
+          const email = searchParams.get("email");
+
+          if (message !== null && email !== null) {
+            showErrorMessages({
+              title: messages.auth.userAlreadyExists,
+              body: `${message}\nEmail: ${email}`,
+            });
+          }
         }
 
-        let response: User | undefined = undefined;
-        if (parseUser !== undefined) {
-          const found = await getUser({
-            email: parseUser.email,
-          });
+        if (isVerify) {
+          const token = searchParams.get("token");
+          const userId = searchParams.get("userId");
 
-          response =
-            found !== null
-              ? found
-              : await createUser({
-                  name: parseUser.name,
-                  email: parseUser.email,
-                  picture: parseUser.picture,
-                  provider: "google",
-                });
-        }
+          if (token !== null && userId !== null && mainWindow !== undefined) {
+            setElectronStorage("authToken", token);
+            setElectronStorage("userId", userId);
+            ipcWebContentsSend("auth", mainWindow.webContents, {
+              isAuthenticated: true,
+            });
+          } else {
+            showErrorMessages({
+              title: messages.auth.errorTokenUserMissing,
+              body: `Token=${token}\nUserId: ${userId}`,
+            });
+          }
 
-        if (response !== undefined && mainWindow !== undefined) {
-          setElectronStorage("user", response);
-          ipcWebContentsSend("auth", mainWindow.webContents, {
-            isAuthenticated: true,
-          });
           window.close();
         }
       }

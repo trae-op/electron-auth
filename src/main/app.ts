@@ -1,13 +1,13 @@
 import { app, BrowserWindow, Menu } from "electron";
 import dotenv from "dotenv";
 import path from "node:path";
-import { buildMenu, getMenu } from "./shared/menu/menu.js";
-import { isDev } from "./shared/utils.js";
-import { setStore } from "./shared/store.js";
-import { createWindow } from "./shared/control-window/create.js";
-import { destroyWindows } from "./shared/control-window/destroy.js";
-import { initNotification } from "./shared/notification.js";
-import { destroyTray, getTrayMenu, buildTray } from "./shared/tray/tray.js";
+import { buildMenu, getMenu } from "./@shared/menu/menu.js";
+import { isDev } from "./@shared/utils.js";
+import { setStore } from "./@shared/store.js";
+import { createWindow } from "./@shared/control-window/create.js";
+import { destroyWindows } from "./@shared/control-window/destroy.js";
+import { initNotification } from "./@shared/notification.js";
+import { destroyTray, getTrayMenu, buildTray } from "./@shared/tray/tray.js";
 import { setFeedURL } from "./updater/services/win/setFeedURL.js";
 import { controlUpdater } from "./updater/services/win/controlUpdater.js";
 import { checkForUpdates } from "./updater/services/checkForUpdates.js";
@@ -16,10 +16,8 @@ import { registerIpc as registerIpcUpdater } from "./updater/ipc.js";
 import { registerIpc as registerIpcPreload } from "./app-preload/ipc.js";
 import { registerIpc as registerIpcAuth } from "./auth/ipc.js";
 import { registerIpc as registerIpcUser } from "./user/ipc.js";
-import { createUser, getUser } from "./user/service.js";
 import { crash } from "./crash/service.js";
 import { menu } from "./config.js";
-import { databaseService } from "./shared/databaseService.js";
 
 const envPath = path.join(process.resourcesPath, ".env");
 dotenv.config(!isDev() ? { path: envPath } : undefined);
@@ -33,7 +31,6 @@ setFeedURL();
 crash();
 
 app.on("ready", async () => {
-  await databaseService.connect();
   const mainWindow = createWindow<TWindows["main"]>({
     hash: "window:main",
     isCache: true,
@@ -80,7 +77,7 @@ app.on("ready", async () => {
     })
   );
 
-  registerIpcAuth({ createUser, getUser });
+  registerIpcAuth();
   registerIpcUser();
   registerIpcPreload();
   registerIpcAppVersion();
@@ -105,8 +102,6 @@ function handleCloseEvents(mainWindow: BrowserWindow) {
   });
 
   app.on("before-quit", async () => {
-    await databaseService.disconnect();
-
     isWillClose = true;
 
     destroyTray();

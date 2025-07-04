@@ -1,5 +1,5 @@
-import { createWindow } from "../shared/control-window/create.js";
-import { setStore } from "../shared/store.js";
+import { createWindow } from "../@shared/control-window/create.js";
+import { setStore } from "../@shared/store.js";
 import { checkForUpdates } from "./services/checkForUpdates.js";
 
 let isCheckFirst = true;

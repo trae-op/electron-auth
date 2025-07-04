@@ -8,9 +8,10 @@ import {
   setElectronStorage,
   getElectronStorage,
   TCacheResponse,
-} from "../shared/store.js";
-import { restApi } from "../config.js";
+} from "../../store.js";
+import { restApi } from "../../../config.js";
 import type { ApiResponse, RequestOptions } from "./types.js";
+import { logout } from "../logout.js";
 
 function getAuthorization(): AxiosRequestConfig["headers"] | undefined {
   const token = getElectronStorage("authToken");
@@ -56,6 +57,9 @@ function handleResponse<T>(response: AxiosResponse<T>): ApiResponse<T> {
 
 function handleError(error: AxiosError): ApiResponse<any> {
   if (error.response) {
+    if (error.response.status === 401) {
+      logout();
+    }
     return {
       status: error.response.status,
       error: {

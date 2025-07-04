@@ -1,5 +1,5 @@
-import { getWindow } from "../../shared/control-window/receive.js";
-import { ipcWebContentsSend } from "../../shared/utils.js";
+import { getWindow } from "../../@shared/control-window/receive.js";
+import { ipcWebContentsSend } from "../../@shared/utils.js";
 
 export function sendUpdateInfo(payload: TUpdateData) {
   const updateWindow = getWindow<TWindows["updateApp"]>("window:update-app");
